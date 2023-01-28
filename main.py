@@ -4,6 +4,15 @@ import re
 import time
 from datetime import datetime
 
+telegram_api_id = 28774191
+telegram_api_hash = '6d2a0150de7fc0b054986c844b24c34a'
+
+# binance_api_key = 'XjdxK2OQ0CuQioFM47QkAdO1NICS3avLcxz1hEDg8xFgRXEqduhaazoVrOm5ylDW'
+# binance_secret = 'b4C30sDwdLBoo4q771jvjkn2LBf5dvbMawGUzyR6wyAUrjExuSVWLySQKjuMeKcy'
+binance_api_key = '177a9229ae61848d388b9913b518540d30cfea19e245fdfc2a66dba13d844eea'
+binance_secret = '013059725d5a9fba39b12ae5d69082c8eded15d983ccec647e87e6ad0fc0f563'
+
+report_in_channel = -1001805018828
 
 pairs = {
     'ALGUSD': 'ALGOUSDT',
