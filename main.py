@@ -1,19 +1,86 @@
 from telethon.sync import TelegramClient, events
 from binance import Client
 import re
+import time
+from datetime import datetime
 
 
+pairs = {
+    'ALGUSD': 'ALGOUSDT',
+    'AVAUSD': 'AVAXUSDT',
+    'AXSUSD': 'AXSUSDT',
+    'ADAUSD': 'ADAUSDT',
+    'BCHUSD': 'BCHUSDT',
+    'BATUSD': 'BATUSDT',
+    'DSHUSD': 'DASHUSDT',
+    'DOTUSD': 'DOTUSDT',
+    'LTCUSD': 'LTCUSDT',
+    'LRCUSD': 'LRCUSDT',
+    'LNKUSD': 'LINKUSDT',
+    'MKRUSD': 'MKRUSDT',
+    'MTCUSD': 'MATICUSDT',
+    'ETHUSD': 'ETHUSDT',
+    'ETCUSD': 'ETCUSDT',
+    'SOLUSD': 'SOLUSDT',
+    'INCUSD': '1INCHUSDT',
+    'NEOUSD': 'NEOUSDT',
+    'NERUSD': 'NEARUSDT',
+    'SANUSD': 'SANDUSDT',
+    'IOTUSD': 'IOTAUSDT',
+    'UNIUSD': 'UNIUSDT',
+    'CRVUSD': 'CRVUSDT',
+    'FILLUSD': 'FILLUSDT',
+    'FTMUSD': 'FTMUSDT',
+    'XMRUSD': 'XMRUSDT',
+    'XTZUSD': 'XTZUSDT',
+    'VECUSD': 'VETUSDT',
+    'TRXUSD': 'TRXUSDT',
+    'OMGUSD': 'OMGUSDT',
+    'ZECUSD': 'ZECUSDT',
+    'RLCUSD': 'RLCUSDT',
+    'BNBUSD': 'BNBUSDT',
+    'XRPUSD': 'XRPUSDT',
+    'DOGUSD': 'DOGEUSDT',
+    'ATMUSD': 'ATOMUSDT',
+    'ONEUSD': 'ONEUSDT',
+    'SUSUSD': 'SUSHIUSDT',
+    'BTCUSD': 'BTCUSDT'
+}
 
-report_in_channel = -1001805018828
-
+bet_usdt = 200
+quantity = 0.01
 binance_client = Client(binance_api_key, binance_secret, testnet=True)
-order = binance_client.futures_create_order(symbol='BTCUSDT', side='BUY', type='LIMIT', quantity=0.01, timeInForce='GTC', price=25000)
-print(order)
-exit()
+exchange_info = binance_client.futures_exchange_info()
 
-def get_account_balance():
-    balance = client.futures_account_balance()[6]['balance']
-    return float(balance)
+
+def get_quantity_precision(symbol):
+   for x in exchange_info['symbols']:
+    if x['symbol'] == symbol:
+        return x['quantityPrecision']
+
+
+def get_price_precision(symbol):
+    for x in exchange_info['symbols']:
+        if x['symbol'] == symbol:
+            return x['pricePrecision']
+
+def get_usdt_balance():
+    balance = binance_client.futures_account_balance()
+    for check_balance in balance:
+        if check_balance["asset"] == "USDT":
+            usdt_balance = check_balance["balance"]
+
+    return usdt_balance
+
+
+def get_min_quant(symbol):
+    info = binance_client.futures_exchange_info()
+    for item in info['symbols']:
+        if item['symbol'] == symbol:
+            for f in item['filters']:
+                if f['filterType'] == 'PRICE_FILTER':
+                    return f['tickSize']
+
 
 def get_min_quant(symbol):
     info = client.futures_exchange_info()
@@ -23,26 +90,120 @@ def get_min_quant(symbol):
                 if f['filterType'] == 'PRICE_FILTER':
                     return f['tickSize']
 
+
 with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
     @client.on(events.NewMessage)
     async def new_message_handler(event):
-        if event.raw_text.startswith('HQ |HQ'):
-            parsed_message = event.raw_text.split("|")
-            pair = parsed_message[2].split(' ')[0]
-            signal = parsed_message[3].split(' SIGNAL')[0].strip()
-            prob = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[5].split(' :')[1])[0]
-            entry = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[6].split(' @ ')[1])[0]
-            tp1 = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[7].split(' : ')[1])[0]
-            tp2 = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[8].split(' : ')[1])[0]
-            stop_loss = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[9].split(' : ')[1])[0]
+        if event.raw_text.startswith('HQ ') or event.raw_text.startswith('SYND TOP/BOTTOM'):
+            symbol = ''
+            parsed_message = event.raw_text.split("|||")
+            print(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+            print(parsed_message)
+            if event.raw_text.startswith('HQ '):
+                pair = parsed_message[2].split(' ')[0]
+                signal = parsed_message[3].split(' SIGNAL')[0].strip()
+                prob = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[5].split(' :')[1])[0]
+                entry = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[6].split(' @ ')[1])[0]
+                tp1 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[7].split(' : ')[1])[0])
+                tp2 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[8].split(' : ')[1])[0])
+                stop_loss = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[9].split(' : ')[1])[0])
+            else:
+                pair = parsed_message[1].split(' ')[0]
+                signal = 'BUY'
+                prob = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[7].split(' :')[1])[0]
+                entry = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[2].split(' @')[1])[0]
+                tp1 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[3].split('TP1 :')[1])[0])
+                tp2 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[4].split('TP2 :')[1])[0])
+                stop_loss = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[5].split('SL :')[1])[0])
+            opposite_side = ''
+            errors = []
+            success = []
+            if (signal == 'BUY'):
+                opposite_side = 'SELL'
+            elif(signal == 'SELL'):
+                opposite_side = 'BUY'
 
-            print('PAIR:' + pair)
-            print('SIGNAL:' + signal)
-            print('PROB:' + prob )
-            print('ENTRY:' + entry)
-            print('TP1:' + tp1)
-            print('TP2:' + tp2)
-            print('STOP LOSS:' + stop_loss)
-            await client.send_message(report_in_channel, f"{pair} {signal} @{entry} TP1: {tp1} TP2: {tp2} SL: {stop_loss} {prob}%")
+            if pair not in pairs:
+                errors.append('Unknown pair')
+                symbol = pair
+            else:
+                symbol = pairs[pair]
+
+                print('Set leverage')
+                binance_client.futures_change_leverage(leverage=20, symbol=symbol)
+                print('Cancel old orders for pair ' + symbol)
+                binance_client.futures_cancel_all_open_orders(symbol=symbol, timestamp=time.time())
+                positions = binance_client.futures_account()['positions']
+                print('Get current price')
+                price = float(binance_client.futures_symbol_ticker(symbol=symbol)['price'])
+                quantity = round(bet_usdt / price, get_quantity_precision(symbol=symbol))
+
+            if pair in pairs:
+                for position in positions:
+                    if position['symbol'] == symbol:
+                        old_position = position
+
+            if not len(errors):
+                try:
+                    print('Create Position ' + signal + ' : ' + str(quantity))
+                    position = binance_client.futures_create_order(
+                        symbol=symbol,
+                        side=signal,
+                        type='MARKET',
+                        quantity=quantity
+                    )
+                    success.append('POSITION')
+
+                    print('Create Tp2')
+                    sell_gain_market_long = binance_client.futures_create_order(
+                        symbol=symbol,
+                        side=opposite_side,
+                        type='TAKE_PROFIT_MARKET',
+                        quantity=quantity,
+                        closePosition=True,
+                        stopPrice=round(tp2, get_price_precision(symbol=symbol))
+                    )
+                    success.append('TP2')
+
+                    print('Create Tp1')
+                    sell_gain_market_long = binance_client.futures_create_order(
+                        symbol=symbol,
+                        side=opposite_side,
+                        type='TAKE_PROFIT_MARKET',
+                        quantity=round(quantity / 2, get_quantity_precision(symbol=symbol)),
+                        stopPrice=round(tp1, get_price_precision(symbol=symbol))
+                    )
+                    success.append('TP1')
+
+                    print('Crate SL')
+                    sell_stop_market_short = binance_client.futures_create_order(
+                        symbol=symbol,
+                        side=opposite_side,
+                        type='STOP_MARKET',
+                        quantity=quantity,
+                        stopPrice=round(stop_loss, get_price_precision(symbol=symbol))
+                    )
+                    success.append('SL')
+                except Exception as exs:
+                    errors.append(str(exs))
+                    print('Exception ' + str(exs))
+                    print('Cancel all open orders')
+                    binance_client.futures_cancel_all_open_orders(symbol=symbol, timestamp=time.time())
+                    if 'POSITION' in success:
+                        print('Revert position')
+                        binance_client.futures_create_order(symbol=symbol, type="MARKET", side=opposite_side, quantity=quantity)
+
+            await client.send_message(report_in_channel,
+                                      f"=================== NEW SIGNAL ===================")
+            await client.send_message(report_in_channel, f"{symbol} {signal} TP1: {tp1} TP2: {tp2} SL: {stop_loss} {prob}%")
+            if len(errors):
+                for error in errors:
+                    await client.send_message(report_in_channel, 'ERROR ' + str(error))
+            elif len(success):
+                await client.send_message(report_in_channel, 'DONE ')
+            await client.send_message(report_in_channel,
+                                      f"=================================================")
+            errors.clear()
+            success.clear()
 
     client.run_until_disconnected()
