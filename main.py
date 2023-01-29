@@ -7,12 +7,12 @@ from datetime import datetime
 telegram_api_id = 28774191
 telegram_api_hash = '6d2a0150de7fc0b054986c844b24c34a'
 
-# binance_api_key = 'XjdxK2OQ0CuQioFM47QkAdO1NICS3avLcxz1hEDg8xFgRXEqduhaazoVrOm5ylDW'
-# binance_secret = 'b4C30sDwdLBoo4q771jvjkn2LBf5dvbMawGUzyR6wyAUrjExuSVWLySQKjuMeKcy'
 binance_api_key = '177a9229ae61848d388b9913b518540d30cfea19e245fdfc2a66dba13d844eea'
 binance_secret = '013059725d5a9fba39b12ae5d69082c8eded15d983ccec647e87e6ad0fc0f563'
 
 report_in_channel = -1001805018828
+
+min_probability = 69
 
 pairs = {
     'ALGUSD': 'ALGOUSDT',
@@ -105,13 +105,14 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
     async def new_message_handler(event):
         if event.raw_text.startswith('HQ ') or event.raw_text.startswith('SYND TOP/BOTTOM'):
             symbol = ''
+            message = ''
             parsed_message = event.raw_text.split("|||")
             print(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
             print(parsed_message)
             if event.raw_text.startswith('HQ '):
                 pair = parsed_message[2].split(' ')[0]
                 signal = parsed_message[3].split(' SIGNAL')[0].strip()
-                prob = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[5].split(' :')[1])[0]
+                prob = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[5].split(' :')[1])[0])
                 entry = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[6].split(' @ ')[1])[0]
                 tp1 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[7].split(' : ')[1])[0])
                 tp2 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[8].split(' : ')[1])[0])
@@ -119,7 +120,7 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
             else:
                 pair = parsed_message[1].split(' ')[0]
                 signal = 'BUY'
-                prob = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[7].split(' :')[1])[0]
+                prob = 101
                 entry = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[2].split(' @')[1])[0]
                 tp1 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[3].split('TP1 :')[1])[0])
                 tp2 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[4].split('TP2 :')[1])[0])
@@ -132,8 +133,11 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
             elif(signal == 'SELL'):
                 opposite_side = 'BUY'
 
-            if pair not in pairs:
-                errors.append('Unknown pair')
+            if pair not in pairs or prob < min_probability:
+                if pair not in pairs:
+                    errors.append('Unknown pair')
+                if prob < min_probability:
+                    errors.append('Low probability ')
                 symbol = pair
             else:
                 symbol = pairs[pair]
@@ -147,10 +151,10 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
                 price = float(binance_client.futures_symbol_ticker(symbol=symbol)['price'])
                 quantity = round(bet_usdt / price, get_quantity_precision(symbol=symbol))
 
-            if pair in pairs:
-                for position in positions:
-                    if position['symbol'] == symbol:
-                        old_position = position
+                if pair in pairs:
+                    for position in positions:
+                        if position['symbol'] == symbol:
+                            old_position = position
 
             if not len(errors):
                 try:
@@ -202,17 +206,18 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
                         print('Revert position')
                         binance_client.futures_create_order(symbol=symbol, type="MARKET", side=opposite_side, quantity=quantity)
 
-            await client.send_message(report_in_channel,
-                                      f"=================== NEW SIGNAL ===================")
-            await client.send_message(report_in_channel, f"{symbol} {signal} TP1: {tp1} TP2: {tp2} SL: {stop_loss} {prob}%")
+            message = message + f"NEW SIGNAL \n"
+            message = message + f"{symbol} {signal} TP1: {tp1} TP2: {tp2} SL: {stop_loss} {prob}% \n"
             if len(errors):
                 for error in errors:
-                    await client.send_message(report_in_channel, 'ERROR ' + str(error))
+                    message = message + 'ERROR\n' + str(error)
             elif len(success):
-                await client.send_message(report_in_channel, 'DONE ')
-            await client.send_message(report_in_channel,
-                                      f"=================================================")
+                message = message + 'DONE\n'
+
+            await client.send_message(report_in_channel, message)
+
             errors.clear()
+            message = ''
             success.clear()
 
     client.run_until_disconnected()
