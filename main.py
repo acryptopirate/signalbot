@@ -7,12 +7,12 @@ from datetime import datetime
 telegram_api_id = 28774191
 telegram_api_hash = '6d2a0150de7fc0b054986c844b24c34a'
 
-binance_api_key = '177a9229ae61848d388b9913b518540d30cfea19e245fdfc2a66dba13d844eea'
-binance_secret = '013059725d5a9fba39b12ae5d69082c8eded15d983ccec647e87e6ad0fc0f563'
+binance_api_key = '2090fb1c85b1aae449518e990abd9aee913ac12f81ed1a665a6d02106b66f99d'
+binance_secret = 'f617383d6ee61536effee19e8f4d129cda5a0e0aafaccbb37aa9f36935dc2b08'
 
 report_in_channel = -1001805018828
 
-min_probability = 69
+min_probability = 49
 
 pairs = {
     'ALGUSD': 'ALGOUSDT',
@@ -106,17 +106,17 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
         if event.raw_text.startswith('HQ ') or event.raw_text.startswith('SYND TOP/BOTTOM'):
             symbol = ''
             message = ''
-            parsed_message = event.raw_text.split("|||")
+            parsed_message = event.raw_text.split("|")
             print(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
             print(parsed_message)
             if event.raw_text.startswith('HQ '):
-                pair = parsed_message[2].split(' ')[0]
-                signal = parsed_message[3].split(' SIGNAL')[0].strip()
-                prob = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[5].split(' :')[1])[0])
-                entry = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[6].split(' @ ')[1])[0]
-                tp1 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[7].split(' : ')[1])[0])
-                tp2 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[8].split(' : ')[1])[0])
-                stop_loss = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[9].split(' : ')[1])[0])
+                pair = parsed_message[2].split(' ')[0] #2 #4
+                signal = parsed_message[3].split(' SIGNAL')[0].strip() #3 #5
+                prob = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[5].split(' :')[1])[0]) #5 #7
+                entry = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[6].split(' @ ')[1])[0] #6 #8
+                tp1 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[7].split(' : ')[1])[0]) #7 #9
+                tp2 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[8].split(' : ')[1])[0]) #8 #10
+                stop_loss = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[9].split(' : ')[1])[0]) #9 #11
             else:
                 pair = parsed_message[1].split(' ')[0]
                 signal = 'BUY'
@@ -128,6 +128,7 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
             opposite_side = ''
             errors = []
             success = []
+            print(f"{symbol} {signal} TP1: {tp1} TP2: {tp2} SL: {stop_loss} {prob}% \n")
             if (signal == 'BUY'):
                 opposite_side = 'SELL'
             elif(signal == 'SELL'):
@@ -163,7 +164,9 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
                         symbol=symbol,
                         side=signal,
                         type='MARKET',
-                        quantity=quantity
+                        quantity=quantity,
+                        reduceOnly=False,
+                        positionSide='BOTH'
                     )
                     success.append('POSITION')
 
@@ -174,19 +177,21 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
                         type='TAKE_PROFIT_MARKET',
                         quantity=quantity,
                         closePosition=True,
-                        stopPrice=round(tp2, get_price_precision(symbol=symbol))
+                        stopPrice=round(tp1, get_price_precision(symbol=symbol)),
+                        timeInForce='GTE_GTC', workingType='MARK_PRICE',
+                        placeType='position'
                     )
                     success.append('TP2')
 
-                    print('Create Tp1')
-                    sell_gain_market_long = binance_client.futures_create_order(
-                        symbol=symbol,
-                        side=opposite_side,
-                        type='TAKE_PROFIT_MARKET',
-                        quantity=round(quantity / 2, get_quantity_precision(symbol=symbol)),
-                        stopPrice=round(tp1, get_price_precision(symbol=symbol))
-                    )
-                    success.append('TP1')
+                    # print('Create Tp1')
+                    # sell_gain_market_long = binance_client.futures_create_order(
+                    #     symbol=symbol,
+                    #     side=opposite_side,
+                    #     type='TAKE_PROFIT_MARKET',
+                    #     quantity=round(quantity / 2, get_quantity_precision(symbol=symbol)),
+                    #     stopPrice=round(tp1, get_price_precision(symbol=symbol))
+                    # )
+                    # success.append('TP1')
 
                     print('Crate SL')
                     sell_stop_market_short = binance_client.futures_create_order(
@@ -194,7 +199,9 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
                         side=opposite_side,
                         type='STOP_MARKET',
                         quantity=quantity,
-                        stopPrice=round(stop_loss, get_price_precision(symbol=symbol))
+                        stopPrice=round(stop_loss, get_price_precision(symbol=symbol)),
+                        timeInForce='GTE_GTC', reduceOnly=True, workingType='MARK_PRICE',
+                        placeType='position'
                     )
                     success.append('SL')
                 except Exception as exs:
