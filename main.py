@@ -15,48 +15,49 @@ report_in_channel = -1001805018828
 min_probability = 49
 
 pairs = {
-    'ALGUSD': 'ALGOUSDT',
-    'AVAUSD': 'AVAXUSDT',
-    'AXSUSD': 'AXSUSDT',
-    'ADAUSD': 'ADAUSDT',
-    'BCHUSD': 'BCHUSDT',
-    'BATUSD': 'BATUSDT',
-    'DSHUSD': 'DASHUSDT',
-    'DOTUSD': 'DOTUSDT',
-    'LTCUSD': 'LTCUSDT',
-    'LRCUSD': 'LRCUSDT',
-    'LNKUSD': 'LINKUSDT',
-    'MKRUSD': 'MKRUSDT',
-    'MTCUSD': 'MATICUSDT',
-    'ETHUSD': 'ETHUSDT',
-    'ETCUSD': 'ETCUSDT',
-    'SOLUSD': 'SOLUSDT',
-    'INCUSD': '1INCHUSDT',
-    'NEOUSD': 'NEOUSDT',
-    'NERUSD': 'NEARUSDT',
-    'SANUSD': 'SANDUSDT',
-    'IOTUSD': 'IOTAUSDT',
-    'UNIUSD': 'UNIUSDT',
-    'CRVUSD': 'CRVUSDT',
-    'FILLUSD': 'FILLUSDT',
-    'FTMUSD': 'FTMUSDT',
-    'XMRUSD': 'XMRUSDT',
-    'XTZUSD': 'XTZUSDT',
-    'VECUSD': 'VETUSDT',
-    'TRXUSD': 'TRXUSDT',
-    'OMGUSD': 'OMGUSDT',
-    'ZECUSD': 'ZECUSDT',
-    'RLCUSD': 'RLCUSDT',
-    'BNBUSD': 'BNBUSDT',
-    'XRPUSD': 'XRPUSDT',
-    'DOGUSD': 'DOGEUSDT',
-    'ATMUSD': 'ATOMUSDT',
-    'ONEUSD': 'ONEUSDT',
-    'SUSUSD': 'SUSHIUSDT',
-    'BTCUSD': 'BTCUSDT'
+    # 'ALGUSD': 'ALGOUSDT',
+    # 'AVAUSD': 'AVAXUSDT',
+    # 'AXSUSD': 'AXSUSDT',
+    # 'ADAUSD': 'ADAUSDT',
+    # 'BCHUSD': 'BCHUSDT',
+    # 'BATUSD': 'BATUSDT',
+    # 'DSHUSD': 'DASHUSDT',
+    # 'DOTUSD': 'DOTUSDT',
+    # 'LTCUSD': 'LTCUSDT',
+    # 'LRCUSD': 'LRCUSDT',
+    # 'LNKUSD': 'LINKUSDT',
+    # 'MKRUSD': 'MKRUSDT',
+    # 'MTCUSD': 'MATICUSDT',
+    # 'ETHUSD': 'ETHUSDT',
+    # 'ETCUSD': 'ETCUSDT',
+    # 'SOLUSD': 'SOLUSDT',
+    # 'INCUSD': '1INCHUSDT',
+    # 'NEOUSD': 'NEOUSDT',
+    # 'NERUSD': 'NEARUSDT',
+    # 'SANUSD': 'SANDUSDT',
+    # 'IOTUSD': 'IOTAUSDT',
+    # 'UNIUSD': 'UNIUSDT',
+    # 'CRVUSD': 'CRVUSDT',
+    # 'FILLUSD': 'FILLUSDT',
+    # 'FTMUSD': 'FTMUSDT',
+    # 'XMRUSD': 'XMRUSDT',
+    # 'XTZUSD': 'XTZUSDT',
+    # 'VECUSD': 'VETUSDT',
+    # 'TRXUSD': 'TRXUSDT',
+    # 'OMGUSD': 'OMGUSDT',
+    # 'ZECUSD': 'ZECUSDT',
+    # 'RLCUSD': 'RLCUSDT',
+    # 'BNBUSD': 'BNBUSDT',
+    # 'XRPUSD': 'XRPUSDT',
+    # 'DOGUSD': 'DOGEUSDT',
+    # 'ATMUSD': 'ATOMUSDT',
+    # 'ONEUSD': 'ONEUSDT',
+    # 'SUSUSD': 'SUSHIUSDT',
+    'BTCUSDT': 'BTCUSDT',
+    'ETHUSDT': 'ETHUSDT'
 }
 
-bet_usdt = 200
+bet_usdt = 500
 quantity = 0.01
 binance_client = Client(binance_api_key, binance_secret, testnet=True)
 exchange_info = binance_client.futures_exchange_info()
@@ -103,48 +104,44 @@ def get_min_quant(symbol):
 with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
     @client.on(events.NewMessage)
     async def new_message_handler(event):
-        if event.raw_text.startswith('HQ ') or event.raw_text.startswith('SYND TOP/BOTTOM'):
+        if event.raw_text.startswith('BTCUSDT MARKET ') or event.raw_text.startswith('ETHUSDT MARKET '):
             symbol = ''
             message = ''
-            parsed_message = event.raw_text.split("|")
+            acc_balance = (binance_client.futures_account_balance())
+            for symbol_balance in acc_balance:
+                if symbol_balance['asset'] == 'USDT':
+                    balance_string = symbol_balance['balance']
+            print('BALANCE')
+            print(balance_string)
+            parsed_message = event.raw_text.split(" ")
             print(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
             print(parsed_message)
-            if event.raw_text.startswith('HQ '):
-                pair = parsed_message[2].split(' ')[0] #2 #4
-                signal = parsed_message[3].split(' SIGNAL')[0].strip() #3 #5
-                prob = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[5].split(' :')[1])[0]) #5 #7
-                entry = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[6].split(' @ ')[1])[0] #6 #8
-                tp1 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[7].split(' : ')[1])[0]) #7 #9
-                tp2 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[8].split(' : ')[1])[0]) #8 #10
-                stop_loss = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[9].split(' : ')[1])[0]) #9 #11
-            else:
-                pair = parsed_message[1].split(' ')[0]
-                signal = 'BUY'
-                prob = 101
-                entry = re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[2].split(' @')[1])[0]
-                tp1 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[3].split('TP1 :')[1])[0])
-                tp2 = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[4].split('TP2 :')[1])[0])
-                stop_loss = float(re.findall(r"[-+]?\d*\.\d+|\d+", parsed_message[5].split('SL :')[1])[0])
+
+            pair = parsed_message[0]
+            signal = parsed_message[2]
+            entry = parsed_message[3]
+            tp1 = float(parsed_message[5])
+            tp2 = float(parsed_message[7])
+            stop_loss = float(parsed_message[9])
+
             opposite_side = ''
             errors = []
             success = []
-            print(f"{symbol} {signal} TP1: {tp1} TP2: {tp2} SL: {stop_loss} {prob}% \n")
+            print(f"{symbol} {signal} TP1: {tp1} SL: {stop_loss} \n")
             if (signal == 'BUY'):
                 opposite_side = 'SELL'
             elif(signal == 'SELL'):
                 opposite_side = 'BUY'
 
-            if pair not in pairs or prob < min_probability:
+            if pair not in pairs:
                 if pair not in pairs:
                     errors.append('Unknown pair')
-                if prob < min_probability:
-                    errors.append('Low probability ')
                 symbol = pair
             else:
                 symbol = pairs[pair]
 
                 print('Set leverage')
-                binance_client.futures_change_leverage(leverage=20, symbol=symbol)
+                binance_client.futures_change_leverage(leverage=100, symbol=symbol)
                 print('Cancel old orders for pair ' + symbol)
                 binance_client.futures_cancel_all_open_orders(symbol=symbol, timestamp=time.time())
                 positions = binance_client.futures_account()['positions']
@@ -170,18 +167,18 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
                     )
                     success.append('POSITION')
 
-                    print('Create Tp2')
+                    print('Create Tp1')
                     sell_gain_market_long = binance_client.futures_create_order(
                         symbol=symbol,
                         side=opposite_side,
                         type='TAKE_PROFIT_MARKET',
                         quantity=quantity,
-                        closePosition=True,
                         stopPrice=round(tp1, get_price_precision(symbol=symbol)),
+                        closePosition=True,
                         timeInForce='GTE_GTC', workingType='MARK_PRICE',
                         placeType='position'
                     )
-                    success.append('TP2')
+                    success.append('TP1')
 
                     # print('Create Tp1')
                     # sell_gain_market_long = binance_client.futures_create_order(
@@ -193,7 +190,7 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
                     # )
                     # success.append('TP1')
 
-                    print('Crate SL')
+                    print('Create SL')
                     sell_stop_market_short = binance_client.futures_create_order(
                         symbol=symbol,
                         side=opposite_side,
@@ -214,7 +211,8 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
                         binance_client.futures_create_order(symbol=symbol, type="MARKET", side=opposite_side, quantity=quantity)
 
             message = message + f"NEW SIGNAL \n"
-            message = message + f"{symbol} {signal} TP1: {tp1} TP2: {tp2} SL: {stop_loss} {prob}% \n"
+            message = message + f"BALANCE {round(float(balance_string),2)}$ \n"
+            message = message + f"{symbol} {signal} TP1: {tp1} SL: {stop_loss} \n"
             if len(errors):
                 for error in errors:
                     message = message + 'ERROR\n' + str(error)
