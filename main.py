@@ -4,13 +4,13 @@ import re
 import time
 from datetime import datetime
 
-telegram_api_id = 28774191
-telegram_api_hash = '6d2a0150de7fc0b054986c844b24c34a'
+telegram_api_id = 255835
+telegram_api_hash = 'd8ad6f04ddef34067d92b99b2d6fb1f6'
 
 binance_api_key = '2090fb1c85b1aae449518e990abd9aee913ac12f81ed1a665a6d02106b66f99d'
 binance_secret = 'f617383d6ee61536effee19e8f4d129cda5a0e0aafaccbb37aa9f36935dc2b08'
 
-report_in_channel = -1001805018828
+report_in_channel = -926159680
 
 min_probability = 49
 
@@ -54,10 +54,10 @@ pairs = {
     # 'ONEUSD': 'ONEUSDT',
     # 'SUSUSD': 'SUSHIUSDT',
     'BTCUSDT': 'BTCUSDT',
-    'ETHUSDT': 'ETHUSDT'
+    # 'ETHUSDT': 'ETHUSDT'
 }
 
-bet_usdt = 500
+bet_usdt = 50
 quantity = 0.01
 binance_client = Client(binance_api_key, binance_secret, testnet=True)
 exchange_info = binance_client.futures_exchange_info()
@@ -104,7 +104,7 @@ def get_min_quant(symbol):
 with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
     @client.on(events.NewMessage)
     async def new_message_handler(event):
-        if event.raw_text.startswith('BTCUSDT MARKET ') or event.raw_text.startswith('ETHUSDT MARKET '):
+        if event.raw_text.startswith('BTCUSDT MARKET '):
             symbol = ''
             message = ''
             acc_balance = (binance_client.futures_account_balance())
@@ -127,7 +127,7 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
             opposite_side = ''
             errors = []
             success = []
-            print(f"{symbol} {signal} TP1: {tp1} SL: {stop_loss} \n")
+            print(f"{symbol} {entry} {signal} TP1: {tp1} SL: {stop_loss} \n")
             if (signal == 'BUY'):
                 opposite_side = 'SELL'
             elif(signal == 'SELL'):
@@ -212,7 +212,7 @@ with TelegramClient('client', telegram_api_id, telegram_api_hash) as client:
 
             message = message + f"NEW SIGNAL \n"
             message = message + f"BALANCE {round(float(balance_string),2)}$ \n"
-            message = message + f"{symbol} {signal} TP1: {tp1} SL: {stop_loss} \n"
+            message = message + f"{symbol} {entry} {signal} TP1: {tp1} SL: {stop_loss} \n"
             if len(errors):
                 for error in errors:
                     message = message + 'ERROR\n' + str(error)
