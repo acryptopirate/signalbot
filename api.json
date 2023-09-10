@@ -1,0 +1,996 @@
+{
+	"info": {
+		"_postman_id": "bce25a04-6236-4101-ac21-031487bf1963",
+		"name": "Admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17890810",
+		"_collection_link": "https://lively-capsule-135389.postman.co/workspace/My-Workspace~c1849f81-334b-48b7-84b5-c0a21d979f5d/collection/17890810-bce25a04-6236-4101-ac21-031487bf1963?action=share&source=collection_link&creator=17890810"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "{{client_id}}",
+							"description": "The client id provided by E-Services to each municipality.",
+							"type": "text"
+						},
+						{
+							"key": "client_secre",
+							"value": "{{client_secret}}",
+							"description": "The client secret key provided by E-Services to each municipality.",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"description": "Always use that grand type for this integration.",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://digital-idm.digitalsofia.digital/auth/realms/forms-flow-ai/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"digital-idm",
+						"digitalsofia",
+						"digital"
+					],
+					"path": [
+						"auth",
+						"realms",
+						"forms-flow-ai",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Successful",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://digital-idm.digitalsofia.digital/auth/realms/forms-flow-ai/protocol/openid-connect/token",
+							"protocol": "http",
+							"host": [
+								"digital-idm",
+								"digitalsofia",
+								"digital"
+							],
+							"path": [
+								"auth",
+								"realms",
+								"forms-flow-ai",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJNRC1ueVRxX3pMcUc2dE9Da3FwVEdvem1JNDU4U1dURjNEOGRHUUltVGkwIn0.eyJleHAiOjE2OTQxNzkwODcsImlhdCI6MTY5NDE3ODQ4NywianRpIjoiMWEzM2M0ZjYtNzczZS00ODRlLThmNTAtOGY3MTU3Njg5ZTEzIiwiaXNzIjoiaHR0cDovL2RpZ2l0YWwtaWRtLmRpZ2l0YWxzb2ZpYS5kaWdpdGFsL2F1dGgvcmVhbG1zL2Zvcm1zLWZsb3ctYWkiLCJhdWQiOlsiZm9ybXMtZmxvdy13ZWIiLCJjYW11bmRhLXJlc3QtYXBpIiwicmVhbG0tbWFuYWdlbWVudCIsImFjY291bnQiXSwic3ViIjoiNTQ4YjYwZmUtMWU3Zi00NGZiLTgxZjYtMTdlMDUxY2YwZDUyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiZm9ybXMtZmxvdy1icG0iLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InJlYWxtLW1hbmFnZW1lbnQiOnsicm9sZXMiOlsibWFuYWdlLXVzZXJzIiwidmlldy11c2VycyIsIm1hbmFnZS1jbGllbnRzIiwicXVlcnktZ3evdXBzIiwicXVlcnktdXNlcnMiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiY2FtdW5kYS1yZXN0LWFwaSBlbWFpbCBzb2YtcG5vIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImNsaWVudElkIjoiZm9ybXMtZmdvdy1icG0iLCJjbGllbnRIb3N0IjoiMTkyLjE3Mi4xMzYuMjAxIiwiZ3JvdXBzIjpbIi9jYW11bmRhLWFkbWluIl0sInByZWZlcnJlZF91c2VybmFtZSI6InNlcnZpY2UtYWNjb3VudC1mb3Jtcy1mbG93LWJwbSIsImNsaWVudEFkZHJlc3MiOiIxOTIuMTcyLjEzNi4yMDEifQ.Ipk6QEREam_hi9J9bZhvl4CCsy4S1VMCzZsqJ_x7KZIfKN9m04ldaWU7pdvkB1hDf_Ew8hRXoB-53hUSRZPb-MIICgwjD7BNGEFI94xrseu4jmB0A6Vmt-M5yjKQ-riEwnH8qyohBJMYgMcUf8FPH6Zus7UtDFUk-xM6gkxEaOUqUIXFMHcL8-rdycICCagFgmLi0-xf33B3FRISeCpCBIBo7EbkS8nhZXJDDP_84Quidev3JF1mxVcmWJDq-MNW4ytYfbx0hrTMnJcJQiY2vIS5c-zbx-o3xKhUjMbhyzqblQZSSYMjKAP2pbZGVDIckOLurBfbNEHgCCZOsAG5HQ\",\n    \"expires_in\": 600,\n    \"refresh_expires_in\": 0,\n    \"token_type\": \"Bearer\",\n    \"not-before-policy\": 0,\n    \"scope\": \"sof-pno profile\"\n}"
+				},
+				{
+					"name": "Invalid client",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://digital-idm.digitalsofia.digital/auth/realms/forms-flow-ai/protocol/openid-connect/token",
+							"protocol": "http",
+							"host": [
+								"digital-idm",
+								"digitalsofia",
+								"digital"
+							],
+							"path": [
+								"auth",
+								"realms",
+								"forms-flow-ai",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"error\": \"invalid_client\",\n    \"error_description\": \"Invalid client or Invalid client credentials\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Application",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    /*\r\n    Documents is an array with base64 encoded pdf files. It is required and the array must have at least one record.\r\n    Assignee is a string and must be a valid personal identification number. Can not be empty or null. It reference the EGN of the employee that is going to work on that application.\r\n    ExternalId is a string representing the id stored in the external clerical work department.\r\n    HasPayment is a boolean attribute that indicates if the application needs a payment.\r\n    TaxAmount is a string containing the value of the payment. Value must be integer or decimal but represented as a string. If hasPayment is false this field will be ignored. Can be null.\r\n    PaymentTill is a date time format \"yy-MM-dd HH:mm\" indicating the deadline for the payment. It can be null if no payment is needed, otherwise it's required. If hasPayment is false this field will be ignored. Can be null.\r\n    */\r\n    \"documents\":[\r\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PC9DcmVhdG9yIChDaHJvbWl1bSkKL1Byb2R1Y2VyIChTa2lhL1BERiBtMTE2KQovQ3JlYXRpb25EYXRlIChEOjIwMjMwOGiUj29k8rilnkUMDAwMDClByZQquRzxQrbPJzlJJSmFeXkUX5gR75dhYGBgfOcgRftlOYGA5CSVpBQVFHCxH2xhEKlnEQMDAwNDShAKguBzosPBoOQklaSUF5egmlpsTD7mMgwMDIzvGkwher4TdCQUkpykkpRhlVUU32sG75dhYGBgfOdgi0QJ3TPD\",\r\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PC9DcmVhdG9yIChDaHJvbWl1bSkKL1Byb2R1Y2VyIChTa2lhL1BERiBtMTE2KQovQ3JlYXRpb25EYXRlIChEOjIwMjMwODI1MDc0ODI5KzAwJzAwJykKL01vZERhdGUgKEQ6MjAyMzA4MjUwNzQ4MjkrMDAnMDAnKT4+CmVuZG9iagozIDAgb2JqCjw8L2NhIDEKL0JNIC9Ob3JtYWwGiUj29k8rilnkUMDAwMDClByZQquRzxQrbPJzlJJSmFeXkUX5gR75dhYGBgfOcgRftlOYGA5CSVpBQVFHCxH2xhEKlnEQMDAwNDShAKguBzosPBoOQklaSUF5egmlpsTD7mMgwMDIzvGkwher4TdCQUkpykkpRhlVUU32sG75dhYGBgfOdgi0QJ3TPD\"\r\n    ],\r\n    \"assignee\": \"8812124444\",\r\n    \"externalId\": \"123ACS\",\r\n    \"hasPayment\": true,\r\n    \"taxAmount\": \"2.50\",\r\n    \"paymentTill\": \"2023-04-28 14:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://api-dev-eservices.egov.bg/application-processing/create",
+					"protocol": "http",
+					"host": [
+						"api-dev-eservices",
+						"egov",
+						"bg"
+					],
+					"path": [
+						"application-processing",
+						"create"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Successfully created with payment",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n       \"documents\":[\r\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PC9D32sG75dhYGBgfOdgi0QJ3TPD\",\r\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6dCQUkpykkpRhlVUU32sG75dhYGBgfOdgi0QJ3TPD\"\r\n    ],\r\n    \"assignee\": \"8812124444\",\r\n    \"externalId\": \"123ACS\",\r\n    \"hasPayment\": true,\r\n    \"taxAmount\": \"2.50\",\r\n    \"paymentTill\": \"2023-04-28 14:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/create",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"create"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    /*\n     Id is returned when the application creation is successful. All other requests for this application must use it as part of the url.\n    */\n    \"id\": 332143142\n}"
+				},
+				{
+					"name": "Successfully created without payment",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"documents\":[\r\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKMSAwIG9hlVUU32sG75dhYGBgfOdgi0QJ3TPD\",\r\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PC9DclaSUF5egmlpsTD7mMgwMDIzvGkwher4TdCQUkpykkpRhlVUU32sG75dhYGBgfOdgi0QJ3TPD\"\r\n    ],\r\n    \"assignee\": \"8812124444\",\r\n    \"externalId\": \"123ACS\",\r\n    \"hasPayment\": false,\r\n    \"taxAmount\": null,\r\n    \"paymentTill\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/create",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"create"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    /*\n     Id is returned when the application creation is successful. All other requests for this application must use it as part of the url.\n    */\n    \"id\": 332143142\n}"
+				},
+				{
+					"name": "Invalid personal identifier",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"documents\":[\r\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PC9DcmVhd5dhYGBgfOdgi0QJ3TPD\",\r\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PC9DcmVhdG9yIChDaHJ7mMgwMDIzvGkwher4TdCQUkpykkpRhlVUU32sG75dhYGBgfOdgi0QJ3TPD\"\r\n    ],\r\n    \"assignee\": \"8812124444\",\r\n    \"externalId\": \"123ACS\",\r\n    \"hasPayment\": true,\r\n    \"taxAmount\": \"2.50\",\r\n    \"paymentTill\": \"2023-04-28 14:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/create",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"create"
+							]
+						}
+					},
+					"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+					"code": 422,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n   \"type\": \"Bad request error\",\n   \"message\": \"Unprocessable Entity\",\n   \"data\": {\n       \"assignee\" : \"Invalid personal identifier\"\n   }\n}"
+				},
+				{
+					"name": "Invalid pdf file",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documents\":[\r\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PC9DcmVhdG9yIChDaHOdgi0QJ3TPD\"\r\n    ],\r\n    \"assignee\": \"8812124444\",\r\n    \"externalId\": \"123ACS\",\r\n    \"hasPayment\": true,\r\n    \"taxAmount\": \"2.50\",\r\n    \"paymentTill\": \"2023-04-28 14:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/create",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"create"
+							]
+						}
+					},
+					"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+					"code": 422,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n   \"type\": \"Bad request error\",\n   \"message\": \"Unprocessable Entity\",\n   \"data\": {\n       \"documents\" : \"Invalid pdf file\"\n   }\n}"
+				},
+				{
+					"name": "Pdf files missing",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documents\":[],\r\n    \"assignee\": \"8812124444\",\r\n    \"externalId\": \"123ACS\",\r\n    \"hasPayment\": true,\r\n    \"taxAmount\": \"2.50\",\r\n    \"paymentTill\": \"2023-04-28 14:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/create",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"create"
+							]
+						}
+					},
+					"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+					"code": 422,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n   \"type\": \"Bad request error\",\n   \"message\": \"Unprocessable Entity\",\n   \"data\": {\n       \"documents\" : \"Documents can not be empty\"\n   }\n}"
+				},
+				{
+					"name": "External id already used",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documents\":[\r\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PC9Dcm2sG75dhYGBgfOdgi0QJ3TPD\"\r\n    ],\r\n    \"assignee\": null,\r\n    \"externalId\": \"123ACS\",\r\n    \"hasPayment\": true,\r\n    \"taxAmount\": \"2.50\",\r\n    \"paymentTill\": \"2023-04-28 14:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/create",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"create"
+							]
+						}
+					},
+					"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+					"code": 422,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n   \"type\": \"Bad request error\",\n   \"message\": \"Unprocessable Entity\",\n   \"data\": {\n       \"assignee\" : \"Identifier is required\",\n       \"externalId\" : \"External id is already used\"\n   }\n}"
+				},
+				{
+					"name": "Unautorised",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documents\":[\r\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKi0QJ3TPD\"\r\n    ],\r\n    \"assignee\": null,\r\n    \"externalId\": \"123ACS\",\r\n    \"hasPayment\": true,\r\n    \"taxAmount\": \"2.50\",\r\n    \"paymentTill\": \"2023-04-28 14:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/create",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"create"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"type\": \"Invalid Token Error\",\n    \"message\": \"Access to API Denied. Check if the bearer token is passed for Authorization or has expired.\"\n}"
+				},
+				{
+					"name": "Forbidden",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documents\":[\r\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKMSAwIG9iPD\",\r\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PC9DcmVhdGkpykkpRhlVUU32sG75dhYGBgfOdgi0QJ3TPD\"\r\n    ],\r\n    \"assignee\": null,\r\n    \"externalId\": \"123ACS\",\r\n    \"hasPayment\": true,\r\n    \"taxAmount\": \"2.50\",\r\n    \"paymentTill\": \"2023-04-28 14:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/create",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"create"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"type\": \"Forbidden\",\n    \"message\": \"You don't have access to this resource\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Change assignee",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    /*\n    This is going to replace the assignee that is going to work on the application. Same validations applies as when creating the application.\n    */\n    \"assignee\": \"8812124444\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://api-dev-eservices.egov.bg/application-processing/{{applicationId}}/changeAssignee",
+					"protocol": "http",
+					"host": [
+						"api-dev-eservices",
+						"egov",
+						"bg"
+					],
+					"path": [
+						"application-processing",
+						"{{applicationId}}",
+						"changeAssignee"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Invalid identifier",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"assignee\": \"88124444\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/{{applicationId}}/changeAssignee",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"{{applicationId}}",
+								"changeAssignee"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n   \"type\": \"Bad request error\",\n   \"message\": \"Unprocessable Entity\",\n   \"data\": {\n       \"assignee\" : \"Identifier is invalid\"\n   }\n}"
+				},
+				{
+					"name": "Successfully changed",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"assignee\": \"8812124444\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/{{applicationId}}/changeAssignee",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"{{applicationId}}",
+								"changeAssignee"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Application status",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "/*\n    This request is for checking application status by one record only. Main purpose is for a quick check.\n    Status can be \"ready,not-ready,needs-agreement\".\n*/",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://api-dev-eservices.egov.bg/application-processing/{{applicationId}}/status",
+					"protocol": "http",
+					"host": [
+						"api-dev-eservices",
+						"egov",
+						"bg"
+					],
+					"path": [
+						"application-processing",
+						"{{applicationId}}",
+						"status"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Documents ready",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/{{applicationId}}/status",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"{{applicationId}}",
+								"status"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    /*\n        When the application is ready to be processed by the external clerical work department the status will be ready or needs-agreement.\n        Documents is an array of objects containing each file name and its download path.\n    */\n    \"status\": \"ready\",\n    \"documents\": [\n        {\n            \"name\": \"Address Change - permanent - РСЦU6XKEX.pdf\",\n            \"file\": \"http://api-dev-eservices.egov.bg/documents/64e85ccd71eb63bc1ca1a659/serve\"\n        },\n        {\n            \"name\": \"Owner Declaration - permanent - РСЦU6XKEX.pdf\",\n            \"file\": \"http://api-dev-eservices.egov.bg/documents/64e85d4071eb63bc1ca1a952/serve\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "Documents not ready",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/{{applicationId}}/status",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"{{applicationId}}",
+								"status"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    /*\n        When the application is still processing by E-Services the status will be not-ready.\n        Documents is an empty array.\n    */\n    \"status\": \"not-ready\",\n    \"documents\": []\n}"
+				}
+			]
+		},
+		{
+			"name": "Application multiple status",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    /*\n    The reuqest will check for all given application ids, no matter of their status. The main purpose is to reduce potential flood with many request from a single status check.\n    ApplicationIds is an array containing the application ids created by E-Services. If some id is incorrect or not found the system will skip it and the request will always return the same structure result without validation errors.\n    */\n    \"applicationIds\":[\n        3213123,\n        4324134\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://api-dev-eservices.egov.bg/application-processing/multiple-status",
+					"protocol": "http",
+					"host": [
+						"api-dev-eservices",
+						"egov",
+						"bg"
+					],
+					"path": [
+						"application-processing",
+						"multiple-status"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Documents ready",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"applicationIds\":[\n        3213123,\n        4324134\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/multiple-status",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"multiple-status"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"exitNumber\": \"123213123\",\n            \"status\": \"ready\",\n            \"documents\": [\n                {\n                    \"name\": \"Address Change - permanent - РСЦU6XKEX.pdf\",\n                    \"file\": \"/documents/64e85ccd71eb63bc1ca1a659/serve\"\n                },\n                {\n                    \"name\": \"Owner Declaration - permanent - РСЦU6XKEX.pdf\",\n                    \"file\": \"/documents/64e85d4071eb63bc1ca1a952/serve\"\n                }\n            ]\n        },\n        {\n            \"exitNumber\": \"32323232\",\n            \"status\": \"ready\",\n            \"documents\": [\n                {\n                    \"name\": \"Address Change - permanent - РСЦU6XKEX.pdf\",\n                    \"file\": \"/documents/64e85ccd71eb63bc1ca1a659/serve\"\n                },\n                {\n                    \"name\": \"Owner Declaration - permanent - РСЦU6XKEX.pdf\",\n                    \"file\": \"/documents/64e85d4071eb63bc1ca1a952/serve\"\n                }\n            ]\n        }\n    ]\n}"
+				},
+				{
+					"name": "Documents not ready",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"applicationIds\":[\n        3213123,\n        4324134\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/multiple-status",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"multiple-status"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"exitNumber\": \"123213123\",\n            \"status\": \"not-ready\",\n            \"documents\": []\n        },\n        {\n            \"exitNumber\": \"32323232\",\n            \"status\": \"needs-agreement\",\n            \"documents\": [\n                {\n                    \"name\": \"Address Change - permanent - РСЦU6XKEX.pdf\",\n                    \"file\": \"/documents/64e85ccd71eb63bc1ca1a659/serve\"\n                },\n                {\n                    \"name\": \"Owner Declaration - permanent - РСЦU6XKEX.pdf\",\n                    \"file\": \"/documents/64e85d4071eb63bc1ca1a952/serve\"\n                }\n            ]\n        },\n        {\n            \"exitNumber\": \"55453433\",\n            \"status\": \"ready\",\n            \"documents\": [\n                {\n                    \"name\": \"Address Change - permanent - РСЦU6XKEX.pdf\",\n                    \"file\": \"/documents/64e85ccd71eb63bc1ca1a659/serve\"\n                },\n                {\n                    \"name\": \"Owner Declaration - permanent - РСЦU6XKEX.pdf\",\n                    \"file\": \"/documents/64e85d4071eb63bc1ca1a952/serve\"\n                }\n            ]\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Application completed",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    /*\n    This request is the final step of communication between the external clerical work department and E-Services. It happens when the application is completed or denied in the external clerical work department and E-Services needs to know it's last state.\n    Status is the representation of the updated application in the external clerical work department after downloading the files from E-Services. Possible options are \"completed,denied\".\n    Description is a free text for historical purposes.\n    Documents is an array with base64 encoded pdf files. It is required but can be an empty array.\n    */\n    \"status\": \"completed\",\n    \"description\": null,\n    \"documents\": [\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PC9DcmVhdG9yIChDaHJvbWl1bSkKL1Byb2R1Y2VyIChTa2lhL1BERiBtMTE2KQovQ3JlYXRpb25EYXRlIChEOjIwMjMwODI1MDc0ODI5KzAwJzAwJykKL01vZERhdGUgKEQ6MjAyMzA4MjUwNzQ4MjkrMDAnMDAnKT4+CmVuZG9iagozIDAgb2JqCjw8L2NhIDEKL0JNIC9Ob3JtYWw+PgplbmRvYmoKNiAwIG9iago8PC9UeXBlIC9YT2JqZWN0Ci9TdWJ0eXBlIC9JbWFnZQovV2lkdGggNTgwCi9IZWlnaHQgNjczCi9Db2xvclNwYWNlIC9EZXZpY2VSR0IKL1NNYXNrIDcgMCBSCi9CaXRzUGVyQ29tcG9uZW50IDgKL0ZpbHRlciAvRmxhdGVEZWNvZGUKL0xlbmd0aCAxNjA4OTg6V5g3zdwOx7u3bzln4OfPu3fufPHseTr5qy159eef+xobnz97JrySEwjwYZZMBKbUs4iBgYGBISW0v/ySmZkpcNnfnz5JzlzJSDjIhUSi7DOpZxEDAwMDQ0oo2CxpxAsep/Ofr18l56lkJDcU4mI/mPxuzGUYGBgY3zVIBUkBWF7wud2Sk1SSEo1EWvIF5NjHiIGBgfFdg5YT9GCuZpTf45GcpJKU/GiUj29k8rilnkUMDAwMDClByZQquRzxQrbPJzlJJSmFeXkUX5gR75dhYGBgfOcgRftlOYGA5CSVpBQVFHCxH2xhEKlnEQMDAwNDShAKguBzosPBoOQklaSUF5egmlpsTD7mMgwMDIzvGkwher4TdCQUkpykkpRhlVUU32sG75dhYGBgfOdgi0QJ3TPD\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://api-dev-eservices.egov.bg/application-processing/{{applicationId}}/documents-processed",
+					"protocol": "http",
+					"host": [
+						"api-dev-eservices",
+						"egov",
+						"bg"
+					],
+					"path": [
+						"application-processing",
+						"{{applicationId}}",
+						"documents-processed"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Completed successfully",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"completed\",\n    \"description\": null,\n    \"documents\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/{{applicationId}}/documents-processed",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"{{applicationId}}",
+								"documents-processed"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Application denied",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"denied\",\n    \"description\": \"Denied because of a reason\",\n    \"documents\": [\n        \"data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PC9DcmVhdG9yIChDaHJvbWl1bSkKL1Byb2R1Y2VyIChTa2lhL1BERiBtMTE2KQovQ3JlYXRpb25EYXRlIChEOjIwMjMwODI1MDc0ODI5KzAwJzAwJykKL01vZERhdGUgKEQ6MjAyMzA4MjUwNzQ4MjkrMDAnMDAnKT4+CmVuZG9iagozIDAgb2JqCjw8L2NhIDEKL0JNIC9Ob3JtYWw+PgplbmRvYmoKNiAwIG9iago8PC9UeXBlIC9YT2JqZWN0Ci9TdWJ0eXBlIC9JbWFnZQovV2lkdGggNTgwCi9IZWlnaHQgNjczCi9Db2xvclNwYWNlIC9EZXZpY2VSR0IKL1NNYXNrIDcgMCBSCi9CaXRzUGVyQ29tcG9uZW50IDgKL0ZpbHRlciAvRmxhdGVEZWNvZGUKL0xlbmd0aCAxNjA4OTg6V5g3zdwOx7u3bzln4OfPu3fufPHseTr5qy159eef+xobnz97JrySEwjwYZZMBKbUs4iBgYGBISW0v/ySmZkpcNnfnz5JzlzJSDjIhUSi7DOpZxEDAwMDQ0oo2CxpxAsep/Ofr18l56lkJDcU4mI/mPxuzGUYGBgY3zVIBUkBWF7wud2Sk1SSEo1EWvIF5NjHiIGBgfFdg5YT9GCuZpTf45GcpJKU/GiUj29k8rilnkUMDAwMDClByZQquRzxQrbPJzlJJSmFeXkUX5gR75dhYGBgfOcgRftlOYGA5CSVpBQVFHCxH2xhEKlnEQMDAwNDShAKguBzosPBoOQklaSUF5egmlpsTD7mMgwMDIzvGkwher4TdCQUkpykkpRhlVUU32sG75dhYGBgfOdgi0QJ3TPD\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/{{applicationId}}/documents-processed",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"{{applicationId}}",
+								"documents-processed"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Application not found",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"completed\",\n    \"description\": null,\n    \"documents\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api-dev-eservices.egov.bg/application-processing/{{applicationId}}/documents-processed",
+							"protocol": "http",
+							"host": [
+								"api-dev-eservices",
+								"egov",
+								"bg"
+							],
+							"path": [
+								"application-processing",
+								"{{applicationId}}",
+								"documents-processed"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	]
+}
